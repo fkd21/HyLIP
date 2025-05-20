@@ -1,0 +1,42 @@
+{
+    "name": "H100",
+    "L1_size": 1.92e5,  
+    "L2_size": 5.24288e7, 
+    "L2_bandwidth": 2.0e12,  
+    "memory_bandwidth": {
+      "SXM": 3.35e12,  
+      "PCIe": 3.9e12,
+      "GPU": 3.35e12
+    },
+    "vector_flops": {
+      "fp32": 6.7e13
+    },
+    "tensor_flops": {
+      "tf32": 9.89e14,
+      "tf32_sparsity": 1.978e15,
+      "fp64": 6.7e13,
+      "fp64_sparsity": 1.34e14,
+      "fp16": 1.978e15,
+      "fp16_sparsity": 3.956e15,
+      "bf16": 1.978e15,
+      "bf16_sparsity": 3.956e15,
+      "fp8": 3.958e15,
+      "fp8_sparsity": 7.916e15,
+      "int8": 3.958e15,
+      "int8_sparsity": 7.916e15
+    },
+    "interconnect": {
+      "type": "NVLink 4.0",
+      "device_count": 8,
+      "topology": "FC",
+      "link_bandwidth_per_direction": 2.5e10,  
+      "link_bandwidth_both_direction": 5.0e10,  
+      "link_latency": 3.0e-8,  
+      "link_count_per_device": 18,
+      "internal_link_bandwidth_per_direction": 2.5e10,
+      "flit_size": 1.6e1,  
+      "header_size": 1.6e1,  
+      "max_payload_size": 2.0e3  
+    }
+  }
+  

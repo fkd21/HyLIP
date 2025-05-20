@@ -1,0 +1,41 @@
+{
+    "name": "MI300X",
+    "L1_size": 9.961472e6,
+    "L2_size": 2.68435456e8,
+    "L2_bandwidth": 2.7e13,
+    "memory_bandwidth": {
+      "GPU": 5.3e12,
+      "CPU": 1.28e11
+    },
+    "vector_flops": {
+      "fp32": 1.634e14
+    },
+    "tensor_flops": {
+      "tf32": 1.634e14,
+      "tf32_sparsity": 3.268e14,
+      "fp64": 8.17e13,
+      "fp64_sparsity": 1.634e14,
+      "fp16": 1.3074e15,
+      "fp16_sparsity": 2.6148e15,
+      "bf16": 1.3074e15,
+      "bf16_sparsity": 2.6148e15,
+      "fp8": 2.6148e15,
+      "fp8_sparsity": 5.2296e15,
+      "int8": 2.6148e15,
+      "int8_sparsity": 5.2296e15
+    },
+    "interconnect": {
+      "type": "Infinity Fabric (XCD-IOD)",
+      "device_count": 8,
+      "topology": "FC",
+      "link_bandwidth_per_direction": 8.0e12,
+      "link_bandwidth_both_direction": 1.6e13,
+      "link_latency": 1.0e-8,
+      "link_count_per_device": 1,
+      "internal_link_bandwidth_per_direction": 8.0e12,
+      "flit_size": 6.8e1,
+      "header_size": 1.6e1,
+      "max_payload_size": 2.56e2
+    }
+  }
+  

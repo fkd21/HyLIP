@@ -1,8 +1,23 @@
-# HyLIP
-Predicting LLM Inference Latency with a Hybrid Modeling Approach
+# HyLip: Hybrid Latency Inference Predictor for LLMs
 
+This project implements a fine-grained model for predicting LLM inference latency, going beyond the basic Roofline model. The main components include:
 
-## Disclaimer
-All data used in this project was collected via publicly available GPU profiling tools (e.g., Nsight, nvprof) on rented cloud GPU instances through platforms such as RunPod and Vast.ai. All profiling activities were conducted within the bounds of standard user access, on instances owned and rented by the author.
+- **Transformer Module Modeling**: Models different attention mechanisms, normalizations, and embedding variants
+- **Hardware-Aware Operator Modeling**: Uses Roofline-based latency estimation for basic operators (matmul, activation)
+- **Scheduling Simulation**: Models both prefill and decode phases separately
+- **Multi-GPU Support**: Accounts for communication overhead in tensor parallelism with different topologies (ring, fully connected)
 
-No attempts were made to reverse engineer, probe, or interfere with the underlying infrastructure of the service providers. The open-sourced models and data are for research and educational purposes only, and do not disclose any private or proprietary information of the platform providers.
+## Project Structure
+
+- `core/`: Core abstractions and interfaces
+- `models/`: Transformer and LLM architecture implementations
+- `hardware/`: Hardware specifications and capabilities modeling
+- `operators/`: Basic computational operators with latency estimations
+- `schedulers/`: Task scheduling and execution simulation
+
+## Usage
+
+```python
+# Example usage will be provided once implementation is complete
+```
+
