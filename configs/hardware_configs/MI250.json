@@ -1,0 +1,41 @@
+{
+    "name": "MI250",
+    "L1_size": 3.407872e6,
+    "L2_size": 1.6777216e7,
+    "L2_bandwidth": 1.2288e13,
+    "memory_bandwidth": {
+      "GPU": 3.2e12,
+      "CPU": 6.4e10
+    },
+    "vector_flops": {
+      "fp32": 4.79e13
+    },
+    "tensor_flops": {
+      "tf32": 9.57e13,
+      "tf32_sparsity": 1.914e14,
+      "fp64": 9.57e13,
+      "fp64_sparsity": 1.914e14,
+      "fp16": 3.83e14,
+      "fp16_sparsity": 7.66e14,
+      "bf16": 3.83e14,
+      "bf16_sparsity": 7.66e14,
+      "fp8": 0.0e0,
+      "fp8_sparsity": 0.0e0,
+      "int8": 3.83e14,
+      "int8_sparsity": 7.66e14
+    },
+    "interconnect": {
+      "type": "Infinity Fabric Gen3 (Inter-GCD)",
+      "device_count": 2,
+      "topology": "FC",
+      "link_bandwidth_per_direction": 2.0e11,
+      "link_bandwidth_both_direction": 4.0e11,
+      "link_latency": 5.0e-8,
+      "link_count_per_device": 1,
+      "internal_link_bandwidth_per_direction": 2.0e11,
+      "flit_size": 6.4e1,
+      "header_size": 1.6e1,
+      "max_payload_size": 2.56e2
+    }
+  }
+  

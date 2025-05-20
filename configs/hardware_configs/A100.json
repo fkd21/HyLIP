@@ -1,0 +1,41 @@
+{
+    "name": "A100",
+    "L1_size": 1.92e5,  
+    "L2_size": 4.1943e7, 
+    "L2_bandwidth": 2.0e12,  
+    "memory_bandwidth": {
+      "PCIe": 1.555e12,    
+      "SXM4": 2.039e12,
+      "GPU": 2.039e12
+    },
+    "vector_flops": {
+      "fp32": 1.95e13
+    },
+    "tensor_flops": {
+      "tf32": 1.56e14,
+      "tf32_sparsity": 3.12e14,
+      "fp64": 1.95e13,
+      "fp16": 3.12e14,
+      "fp16_sparsity": 6.24e14,
+      "bf16": 3.12e14,
+      "bf16_sparsity": 6.24e14,
+      "fp32": 1.95e13,  
+      "fp8": 0.0e0,
+      "int8": 6.24e14,
+      "int8_sparsity": 1.248e15
+    },
+    "interconnect": {
+      "type": "NVLink 3.0",
+      "device_count": 4,
+      "topology": "FC",
+    "link_bandwidth_per_direction": 2.5e10,      
+      "link_bandwidth_both_direction": 5.0e10,     
+      "link_latency": 3.0e-8,                     
+      "link_count_per_device": 12,
+      "internal_link_bandwidth_per_direction": 2.5e10,  
+      "flit_size": 1.6e1,                         
+      "header_size": 1.6e1,                       
+      "max_payload_size": 2.0e3                
+    }
+  }
+  

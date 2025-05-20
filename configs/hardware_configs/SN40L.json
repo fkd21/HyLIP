@@ -1,0 +1,41 @@
+{
+    "name": "SambaNova SN40L",
+    "L1_size": 1.2e12,
+    "L2_size": 1.2e12,
+    "L2_bandwidth": 5.0e20,
+    "memory_bandwidth": {
+      "GPU": 5.12e12,
+      "CPU": 1.28e11
+    },
+    "vector_flops": {
+      "fp32": 5.0e13
+    },
+    "tensor_flops": {
+      "tf32": 6.88e14,
+      "tf32_sparsity": 6.88e14,
+      "fp64": 1.0e13,
+      "fp64_sparsity": 1.0e13,
+      "fp16": 6.88e14,
+      "fp16_sparsity": 6.88e14,
+      "bf16": 6.88e14,
+      "bf16_sparsity": 6.88e14,
+      "fp8": 1.376e15,
+      "fp8_sparsity": 1.376e15,
+      "int8": 1.376e15,
+      "int8_sparsity": 1.376e15
+    },
+    "interconnect": {
+      "type": "SambaFabric",
+      "device_count": 1,
+      "topology": "FC",
+      "link_bandwidth_per_direction": 4.0e11,
+      "link_bandwidth_both_direction": 8.0e11,
+      "link_latency": 3.0e-7,
+      "link_count_per_device": 6,
+      "internal_link_bandwidth_per_direction": 0.0e0,
+      "flit_size": 6.4e1,
+      "header_size": 1.6e1,
+      "max_payload_size": 2.56e2
+    }
+  }
+  

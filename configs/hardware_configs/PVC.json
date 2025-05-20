@@ -1,0 +1,41 @@
+{
+    "name": "Intel Ponte Vecchio (PVC)",
+    "L1_size": 6.7108864e7,
+    "L2_size": 4.27819008e8,
+    "L2_bandwidth": 2.7e13,
+    "memory_bandwidth": {
+      "GPU": 3.2768e12,
+      "CPU": 1.28e11
+    },
+    "vector_flops": {
+      "fp32": 5.2e13
+    },
+    "tensor_flops": {
+      "tf32": 4.194e14,
+      "tf32_sparsity": 8.388e14,
+      "fp64": 2.6e13,
+      "fp64_sparsity": 2.6e13,
+      "fp16": 8.388e14,
+      "fp16_sparsity": 1.6776e15,
+      "bf16": 8.388e14,
+      "bf16_sparsity": 1.6776e15,
+      "fp8": 0.0e0,
+      "fp8_sparsity": 0.0e0,
+      "int8": 1.6777e15,
+      "int8_sparsity": 3.3554e15
+    },
+    "interconnect": {
+      "type": "Xe Link",
+      "device_count": 2,
+      "topology": "FC",
+      "link_bandwidth_per_direction": 3.6e11,
+      "link_bandwidth_both_direction": 7.2e11,
+      "link_latency": 5.0e-8,
+      "link_count_per_device": 8,
+      "internal_link_bandwidth_per_direction": 3.6e11,
+      "flit_size": 6.4e1,
+      "header_size": 1.6e1,
+      "max_payload_size": 2.56e2
+    }
+  }
+  

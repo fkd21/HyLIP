@@ -1,0 +1,1 @@
+"""Core module containing base abstractions and interfaces for HyLip.""" 
