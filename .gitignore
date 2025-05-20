@@ -1,0 +1,8 @@
+# 忽略编译文件
+*.o
+*.out
+*.class
+
+# 忽略 Python 缓存
+__pycache__/
+*.pyc

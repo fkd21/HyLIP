@@ -21,3 +21,11 @@ This project implements a fine-grained model for predicting LLM inference latenc
 # Example usage will be provided once implementation is complete
 ```
 
+<<<<<<< HEAD
+=======
+## Requirements
+
+- Python 3.8+
+- NumPy
+- Matplotlib (for visualization) 
+>>>>>>> master

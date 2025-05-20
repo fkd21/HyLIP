@@ -8,12 +8,12 @@ from configs.model_configs.model_config import ModelConfig
 
 class Qwen2_72B(ModelConfig):
     def __init__(self, seq_len=2048):
-        super().__init__()
+        # Initialize the model with name and sequence length
         self.model_name = "Qwen/Qwen2-72B"
-        self.model_params = self._get_local_config()
-        self.seq_len = seq_len # Overrides base if necessary, or set by set_seq_len
+        self.model_params = self.get_local_config()
+        self.seq_len = seq_len
 
-    def _get_local_config(self):
+    def get_local_config(self):
         """Provide local model configuration."""
         return {
             "architectures": ["Qwen2ForCausalLM"],
