@@ -307,44 +307,74 @@ def evaluate_combined_config(args):
     else:
         return result, loop_order, config
 
-def single_matmul_latency(M, N, K, hardware: Hardware, word_size=16, data_type="fp16", ifdouble=True):
+def single_matmul_latency(M, N, K, hardware: Hardware, word_size=16, data_type="fp16", ifdouble=True,use_multiprocessing=False):
     # Get capacity limit
     if ifdouble:
         capacity = hardware.L2_size // word_size // 2
     else:
         capacity = hardware.L2_size // word_size
-    
-    # Heuristic GPU config
-    all_configs = []
-    for l2_tile_M in [64, 128, 256, 512, 1024, 2048]:
-        for l2_tile_N in [l2_tile_M // 2, l2_tile_M, l2_tile_M * 2]:
-            if K <= 12288:
-                l2_K_tiling_factor_list = [1, 2, 4, 8]
-            else:
-                l2_K_tiling_factor_list = [K // 1024, K // 2048, K // 4096, K // 8192]
-            
-            for l2_K_tiling_factor in l2_K_tiling_factor_list:
-                l2_tile_K = ceil(K / l2_K_tiling_factor)
-                l2_tile_K = 2 ** floor(log2(l2_tile_K))
+    if use_multiprocessing:
+        # Heuristic GPU config
+        all_configs = []
+        for l2_tile_M in [64, 128, 256, 512, 1024, 2048]:
+            for l2_tile_N in [l2_tile_M // 2, l2_tile_M, l2_tile_M * 2]:
+                if K <= 12288:
+                    l2_K_tiling_factor_list = [1, 2, 4, 8]
+                else:
+                    l2_K_tiling_factor_list = [K // 1024, K // 2048, K // 4096, K // 8192]
                 
-                if l2_tile_K*l2_tile_M+l2_tile_K*l2_tile_N+l2_tile_M*l2_tile_N <= capacity:
-                    all_configs.append((l2_tile_M, l2_tile_N, l2_tile_K))
-    
-    loop_orders = ["mkn", "mnk", "nkm", "nmk", "knm", "kmn"]
-    
-    # Flatten all combinations of loop orders and tile configurations
-    all_combinations = []
-    for loop_order in loop_orders:
+                for l2_K_tiling_factor in l2_K_tiling_factor_list:
+                    l2_tile_K = ceil(K / l2_K_tiling_factor)
+                    l2_tile_K = 2 ** floor(log2(l2_tile_K))
+                    
+                    if l2_tile_K*l2_tile_M+l2_tile_K*l2_tile_N+l2_tile_M*l2_tile_N <= capacity:
+                        all_configs.append((l2_tile_M, l2_tile_N, l2_tile_K))
+        
+        loop_orders = ["mkn", "mnk", "nkm", "nmk", "knm", "kmn"]
+        
+        # Flatten all combinations of loop orders and tile configurations
+        all_combinations = []
+        for loop_order in loop_orders:
+            for config in all_configs:
+                all_combinations.append((loop_order, config, M, N, K, hardware, word_size, data_type, ifdouble))
+        
+        # Use a single process pool for all evaluations at once
+        with mp.Pool(processes=2*mp.cpu_count()) as pool:
+            all_results = pool.map(evaluate_combined_config, all_combinations)
+        
+        if all_results:
+            best_result = min(all_results, key=lambda x: x[0])
+            return best_result[0], best_result[1]  # Return latency and loop order
+    else:
+        # Heuristic GPU config
+        all_configs = []
+        for l2_tile_M in [64, 128, 256, 512, 1024, 2048]:
+            for l2_tile_N in [l2_tile_M // 2, l2_tile_M, l2_tile_M * 2]:
+                if K <= 12288:
+                    l2_K_tiling_factor_list = [1, 2, 4, 8]
+                else:
+                    l2_K_tiling_factor_list = [K // 1024, K // 2048, K // 4096, K // 8192]
+                
+                for l2_K_tiling_factor in l2_K_tiling_factor_list:
+                    l2_tile_K = ceil(K / l2_K_tiling_factor)
+                    l2_tile_K = 2 ** floor(log2(l2_tile_K))
+                    
+                    if l2_tile_K*l2_tile_M+l2_tile_K*l2_tile_N+l2_tile_M*l2_tile_N <= capacity:
+                        all_configs.append((l2_tile_M, l2_tile_N, l2_tile_K))
+        
+        loop_orders = ["mkn", "mnk", "nkm", "nmk", "knm", "kmn"]
+        
+        # Evaluate each configuration with each loop order
+        results = []
         for config in all_configs:
-            all_combinations.append((loop_order, config, M, N, K, hardware, word_size, data_type, ifdouble))
-    
-    # Use a single process pool for all evaluations at once
-    with mp.Pool(processes=2*mp.cpu_count()) as pool:
-        all_results = pool.map(evaluate_combined_config, all_combinations)
-    
-    if all_results:
-        best_result = min(all_results, key=lambda x: x[0])
-        return best_result[0], best_result[1]  # Return latency and loop order
+            for loop_order in loop_orders:
+                result = evaluate_config((config, M, N, K, hardware, word_size, data_type, ifdouble))
+                results.append(result)
+        
+        # Find minimum latency and best loop order
+        if results:
+            min_result = min(results, key=lambda x: x[0])
+            return min_result[0], min_result[1]
     
     return float('inf'), "mnk"
 

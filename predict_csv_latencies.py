@@ -5,8 +5,18 @@ from typing import Dict, List, Tuple
 import importlib.util
 import sys
 from collections import defaultdict
+import logging
 
 from base_predict import predict_latency
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
 
 
 def map_model_name_to_config(model_name: str) -> str:
@@ -112,25 +122,25 @@ def process_csv(input_csv: str, output_csv: str, use_flash_attention: bool = Fal
         # Determine parallel mode
         parallel_mode = determine_parallel_mode(framework)
 
-        # try:
-        results = predict_latency(
-            model_config_path=model_config_path,
-            hardware_config_path=hardware_config_path,
-            seq_len=seq_len,
-            batch_size=batch_size,
-            parallel_mode=parallel_mode,
-            num_devices=num_devices,
-            dtype="fp16",  # Assuming all models use fp16
-            use_flash_attention=use_flash_attention
-        )
-        
-        prefill_latency = results["prefill_latency"]
-        decode_latency = results["decode_latency"]
+        try:
+            results = predict_latency(
+                model_config_path=model_config_path,
+                hardware_config_path=hardware_config_path,
+                seq_len=seq_len,
+                batch_size=batch_size,
+                parallel_mode=parallel_mode,
+                num_devices=num_devices,
+                dtype="fp16",  # Assuming all models use fp16
+                use_flash_attention=use_flash_attention
+            )
             
-        # except Exception as e:
-        #     print(f"Error predicting for row {i+1}: {e}")
-        #     row.append("Error")
-        #     continue
+            prefill_latency = results["prefill_latency"]
+            decode_latency = results["decode_latency"]
+            
+        except Exception as e:
+            print(f"Error predicting for row {i+1}: {e}")
+            row.append("Error")
+            continue
         
         # Calculate end-to-end latency: prefill + decode * (tokens - 1)
         # Assuming seq_len is the total number of tokens to generate
@@ -143,7 +153,8 @@ def process_csv(input_csv: str, output_csv: str, use_flash_attention: bool = Fal
         # Print progress
         print(predicted_latency)
         print(f"Processed {i + 1}/{len(rows)} rows")
-        if (i+1)%100 == 0:
+        logger.info(f"Processed {i + 1}/{len(rows)} rows")
+        if (i+1)%1 == 0:
             #save scv file
             with open(output_csv, 'w', newline='') as csvfile:
                 writer = csv.writer(csvfile)
@@ -155,8 +166,10 @@ def process_csv(input_csv: str, output_csv: str, use_flash_attention: bool = Fal
         writer = csv.writer(csvfile)
         writer.writerow(header)
         writer.writerows(rows)
+        
     
-    print(f"Completed processing {len(rows)} rows. Results written to {output_csv}")
+    logger.info(f"Completed processing {len(rows)} rows. Results written to {output_csv}")
+    # print(f"Completed processing {len(rows)} rows. Results written to {output_csv}")
 
 
 if __name__ == "__main__":

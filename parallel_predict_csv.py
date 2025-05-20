@@ -54,7 +54,11 @@ def split_csv(input_file, num_chunks):
         chunks = []
         
         # Create a temporary directory to store the chunk files
-        temp_dir = tempfile.mkdtemp()
+        # 确保tmp目录存在（相对路径）
+        os.makedirs("tmp", exist_ok=True)
+
+        # 在tmp目录下创建临时文件夹
+        temp_dir = tempfile.mkdtemp(dir="tmp")
         logger.info(f"Created temporary directory: {temp_dir}")
         
         # Split the dataframe and save chunks
@@ -78,6 +82,7 @@ def process_chunk(args):
     
     # Create output file path for this chunk
     output_file = f"{chunk_file}.out"
+    logger.info(f"Output file for chunk {start_idx}:{end_idx} will be {output_file}")
     
     # Build command
     cmd = ["python", "predict_csv_latencies.py", "--input", chunk_file, "--output", output_file]

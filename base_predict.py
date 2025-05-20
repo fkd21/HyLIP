@@ -5,7 +5,7 @@ import numpy as np
 from typing import Dict, List, Tuple, Union, Optional, Any
 import importlib.util
 import sys
-
+import logging
 # 确保这些导入指向您项目中模块的实际位置
 from core.hardware import Hardware
 from operators.matmul import get_matmul_latency
@@ -15,6 +15,14 @@ from operators.communication_primitive import AllReduce, AllGather, ReduceScatte
 # 假设 fused_attention_estimator.py 位于 'operators' 目录下
 from operators.fused_attention_estimator import get_fused_attention_latency
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
 
 class LatencyPredictor:
     def __init__(
